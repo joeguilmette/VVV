@@ -78,7 +78,6 @@ apt_package_check_list=(
 	vim
 	colordiff
 	postfix
-	wordmove
 
 	# Req'd for i18n tools
 	gettext
