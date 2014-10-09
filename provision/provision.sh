@@ -454,7 +454,7 @@ if [[ $ping_result == *bytes?from* ]]; then
 	/srv/www/phpcs/scripts/phpcs -i
 
 	# Rubygems update
-	#
+	
 	if [ $(gem -v|grep '^2.') ]; then
 		echo "gem installed"
 	else
