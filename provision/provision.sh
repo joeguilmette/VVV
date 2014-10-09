@@ -488,6 +488,16 @@ if [[ $ping_result == *bytes?from* ]]; then
 
 		fi
 	fi
+	
+	# sshpass install
+	#
+	if [  "$(which sshpass)" ]; then
+		echo "sshpass installed"
+	else
+		echo "sshpass not installed"
+		apt-get install sshpass
+		echo "sshpass installed"
+	fi
 
 	# Install and configure the latest stable version of WordPress
 	if [[ ! -d /srv/www/wordpress-default ]]; then
