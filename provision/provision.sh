@@ -78,6 +78,7 @@ apt_package_check_list=(
 	vim
 	colordiff
 	postfix
+	wordmove
 
 	# Req'd for i18n tools
 	gettext
@@ -451,6 +452,43 @@ if [[ $ping_result == *bytes?from* ]]; then
 	# Install the standards in PHPCS
 	/srv/www/phpcs/scripts/phpcs --config-set installed_paths ./CodeSniffer/Standards/WordPress/
 	/srv/www/phpcs/scripts/phpcs -i
+
+	# Rubygems update
+	#
+	if [ $(gem -v|grep '^2.') ]; then
+		echo "gem installed"
+	else
+		apt-get install -y ruby-dev
+		echo "ruby-dev installed"
+		echo "gem not installed"
+		gem install rubygems-update
+		update_rubygems
+	fi
+
+	# wordmove install
+	#exit
+	wordmove_install="$(gem list wordmove -i)"
+	if [ "$wordmove_install" = true ]; then
+		echo "wordmove installed"
+	else
+		echo "wordmove not installed"
+		gem install wordmove
+
+		wordmove_path="$(gem which wordmove | sed -s 's/.rb/\/deployer\/base.rb/')"
+		if [  "$(grep yaml $wordmove_path)" ]; then
+
+
+			echo "can require yaml"
+		else
+			echo "can't require yaml"
+			echo "set require yaml"
+
+			sed -i "7i require\ \'yaml\'" $wordmove_path
+
+			echo "can require yaml"
+
+		fi
+	fi
 
 	# Install and configure the latest stable version of WordPress
 	if [[ ! -d /srv/www/wordpress-default ]]; then
